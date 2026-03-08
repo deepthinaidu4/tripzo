@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Epic Travel Destinations</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            overflow: hidden;
+            height: 100vh;
+        }
+
+        .container {
+            position: relative;
+            width: 100%;
+            height: 100vh;
+        }
+
+        .slideshow-container {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            border-radius: 0px;
+            overflow: hidden;
+            box-shadow: none;
+            background: #000;
+        }
+
+        .slide {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            transition: all 2s cubic-bezier(0.4, 0, 0.2, 1);
+            background-size: 100% 100%;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-color: #000;
+        }
+
+        .slide.active {
+            opacity: 1;
+            transform: scale(1.05);
+        }
+
+        .slide.next {
+            opacity: 0;
+            transform: scale(1.1);
+        }
+
+        .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, rgba(0, 0, 0, 0.3), transparent);
+            z-index: 2;
+        }
+
+        .content {
+            position: absolute;
+            bottom: 60px;
+            left: 60px;
+            color: white;
+            z-index: 3;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+        }
+
+        .title {
+            font-size: 3.5rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4, #45b7d1, #96ceb4, #ffecd2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-size: 400% 400%;
+            animation: gradientShift 3s ease-in-out infinite;
+        }
+
+        .subtitle {
+            font-size: 1.4rem;
+            font-weight: 300;
+            opacity: 0.9;
+            letter-spacing: 2px;
+        }
+
+        @keyframes gradientShift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        .progress-bar {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #ff6b6b, #4ecdc4);
+            transition: width 2.5s linear;
+            z-index: 4;
+        }
+
+        .floating-elements {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .particle {
+            position: absolute;
+            width: 3px;
+            height: 3px;
+            background: rgba(255, 255, 255, 0.6);
+            border-radius: 50%;
+            animation: float 6s infinite ease-in-out;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); opacity: 1; }
+            50% { transform: translateY(-20px) rotate(180deg); opacity: 0.3; }
+        }
+
+        .controls {
+            position: absolute;
+            top: 30px;
+            right: 30px;
+            z-index: 5;
+            display: flex;
+            gap: 15px;
+        }
+
+        .control-btn {
+            width: 50px;
+            height: 50px;
+            border: none;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            color: white;
+            font-size: 18px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .control-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: scale(1.1);
+        }
+
+        .destination-counter {
+            position: absolute;
+            top: 30px;
+            left: 30px;
+            z-index: 5;
+            color: white;
+            font-size: 1.2rem;
+            background: rgba(0, 0, 0, 0.5);
+            padding: 10px 20px;
+            border-radius: 25px;
+            backdrop-filter: blur(10px);
+        }
+
+        /* Responsive styles for tablets and smaller desktops (up to 1200px) */
+@media (max-width: 1200px) {
+    .content {
+        bottom: 40px;
+        left: 40px;
+    }
+
+    .title {
+        font-size: 3rem;
+    }
+
+    .subtitle {
+        font-size: 1.2rem;
+    }
+}
+/* Responsive styles for tablets (up to 768px) */
+@media (max-width: 768px) {
+    .content {
+        bottom: 30px;
+        left: 30px;
+    }
+
+    .title {
+        font-size: 2.5rem;
+    }
+
+    .subtitle {
+        font-size: 1rem;
+    }
+
+    .controls {
+        top: 20px;
+        right: 20px;
+        gap: 10px;
+    }
+
+    .control-btn {
+        width: 45px;
+        height: 45px;
+        font-size: 16px;
+    }
+    
+    .destination-counter {
+        top: 20px;
+        left: 20px;
+        font-size: 1rem;
+        padding: 8px 16px;
+    }
+}
+
+/* Responsive styles for mobile phones (up to 480px) */
+@media (max-width: 480px) {
+    .content {
+        bottom: 20px;
+        left: 20px;
+    }
+
+    .title {
+        font-size: 1.8rem;
+    }
+
+    .subtitle {
+        font-size: 0.8rem;
+        letter-spacing: 1px;
+    }
+
+    .controls {
+        top: 15px;
+        right: 15px;
+    }
+
+    .control-btn {
+        width: 40px;
+        height: 40px;
+        font-size: 14px;
+    }
+
+    .destination-counter {
+        top: 15px;
+        left: 15px;
+        font-size: 0.9rem;
+        padding: 6px 12px;
+    }
+
+    .slide {
+        background-size: cover; /* Adjusts image to fit container, good for mobiles */
+    }
+}
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="slideshow-container">
+            <div class="destination-counter">
+                <span id="current">1</span> / <span id="total">12</span>
+            </div>
+            
+            <div class="controls">
+                <button class="control-btn" onclick="pausePlay()">⏸️</button>
+                <button class="control-btn" onclick="nextSlide()">⏭️</button>
+            </div>
+
+            <div class="slide active" style="background-image: url('https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80');">
+                <div class="overlay"></div>
+                <div class="content">
+                    <div class="title">MALDIVES</div>
+                    <div class="subtitle">Paradise on Earth</div>
+                </div>
+            </div>
+
+            <div class="slide" style="background-image: url('https://moverdb.com/wp-content/uploads/moving-to-paris-1.jpg');">
+                <div class="overlay"></div>
+                <div class="content">
+                    <div class="title">PARIS</div>
+                    <div class="subtitle">City of Light</div>
+                </div>
+            </div>
+
+            <div class="slide" style="background-image: url('https://res.cloudinary.com/djcyhbk2e/image/upload/f_auto,q_35,w_1200/v1/gvv/prod/brdsswlg3ae8xh8jybtg');">
+                <div class="overlay"></div>
+                <div class="content">
+                    <div class="title">BALI</div>
+                    <div class="subtitle">Island of Gods</div>
+                </div>
+            </div>
+
+            <div class="slide" style="background-image: url('https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?ixlib=rb-4.0.3&auto=format&fit=crop&w=2088&q=80');">
+                <div class="overlay"></div>
+                <div class="content">
+                    <div class="title">TOKYO</div>
+                    <div class="subtitle">Future Meets Tradition</div>
+                </div>
+            </div>
+
+            <div class="slide" style="background-image: url('https://images.unsplash.com/photo-1485738422979-f5c462d49f74?ixlib=rb-4.0.3&auto=format&fit=crop&w=2099&q=80');">
+                <div class="overlay"></div>
+                <div class="content">
+                    <div class="title">NEW YORK</div>
+                    <div class="subtitle">The Big Apple</div>
+                </div>
+            </div>
+
+            <div class="slide" style="background-image: url('https://images.unsplash.com/photo-1515542622106-78bda8ba0e5b?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80');">
+                <div class="overlay"></div>
+                <div class="content">
+                    <div class="title">ROME</div>
+                    <div class="subtitle">Eternal City</div>
+                </div>
+            </div>
+
+            <div class="slide" style="background-image: url('https://images.unsplash.com/photo-1512453979798-5ea266f8880c?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80');">
+                <div class="overlay"></div>
+                <div class="content">
+                    <div class="title">DUBAI</div>
+                    <div class="subtitle">City of Gold</div>
+                </div>
+            </div>
+
+            <div class="slide" style="background-image: url('https://www.avontuura.com/wp-content/uploads/2017/06/daniel-corneschi-627754-unsplash.jpg');">
+                <div class="overlay"></div>
+                <div class="content">
+                    <div class="title">BARCELONA</div>
+                    <div class="subtitle">Architectural Marvel</div>
+                </div>
+            </div>
+
+            <div class="slide" style="background-image: url('https://www.nordicvisitor.com/images/iceland/summer/hallgrimskirkja-reykjavik-iceland.jpg');">
+                <div class="overlay"></div>
+                <div class="content">
+                    <div class="title">REYKJAVIK</div>
+                    <div class="subtitle">Land of Fire & Ice</div>
+                </div>
+            </div>
+
+            <div class="slide" style="background-image: url('https://cdn1.matadornetwork.com/blogs/1/2019/01/View-of-the-city-center-and-Nydeggbrucke-bridge-over-river-Aare-Switzerland.jpg');">
+                <div class="overlay"></div>
+                <div class="content">
+                    <div class="title">SWITZERLAND</div>
+                    <div class="subtitle">Alpine Paradise</div>
+                </div>
+            </div>
+
+            <div class="slide" style="background-image: url('https://images.unsplash.com/photo-1552465011-b4e21bf6e79a?ixlib=rb-4.0.3&auto=format&fit=crop&w=2039&q=80');">
+                <div class="overlay"></div>
+                <div class="content">
+                    <div class="title">PHI PHI ISLAND</div>
+                    <div class="subtitle">Tropical Heaven</div>
+                </div>
+            </div>
+
+            <div class="slide" style="background-image: url('https://images.unsplash.com/photo-1512343879784-a960bf40e7f2?ixlib=rb-4.0.3&auto=format&fit=crop&w=2074&q=80');">
+                <div class="overlay"></div>
+                <div class="content">
+                    <div class="title">GOA</div>
+                    <div class="subtitle">Beach Paradise</div>
+                </div>
+            </div>
+
+            <div class="progress-bar" id="progress"></div>
+        </div>
+
+        <div class="floating-elements">
+            <div class="particle" style="left: 10%; top: 20%; animation-delay: 0s;"></div>
+            <div class="particle" style="left: 20%; top: 80%; animation-delay: 1s;"></div>
+            <div class="particle" style="left: 80%; top: 30%; animation-delay: 2s;"></div>
+            <div class="particle" style="left: 90%; top: 70%; animation-delay: 3s;"></div>
+            <div class="particle" style="left: 50%; top: 10%; animation-delay: 4s;"></div>
+            <div class="particle" style="left: 30%; top: 50%; animation-delay: 5s;"></div>
+        </div>
+    </div>
+
+    <script>
+       let currentSlide = 0;
+        let isPlaying = true;
+        const slides = document.querySelectorAll('.slide');
+        const totalSlides = slides.length;
+        const progressBar = document.getElementById('progress');
+        const currentCounter = document.getElementById('current');
+        const totalCounter = document.getElementById('total');
+
+        totalCounter.textContent = totalSlides;
+
+        function showSlide(index) {
+            slides.forEach((slide, i) => {
+                slide.classList.remove('active', 'next');
+                if (i === index) {
+                    slide.classList.add('active');
+                } else if (i === (index + 1) % totalSlides) {
+                    slide.classList.add('next');
+                }
+            });
+            
+            currentCounter.textContent = index + 1;
+            const progress = ((index + 1) / totalSlides) * 100;
+            progressBar.style.width = progress + '%';
+        }
+
+        function nextSlide() {
+            currentSlide = (currentSlide + 1) % totalSlides;
+            showSlide(currentSlide);
+        }
+
+        function pausePlay() {
+            isPlaying = !isPlaying;
+            const btn = document.querySelector('.control-btn');
+            btn.textContent = isPlaying ? '⏸️' : '▶️';
+        }
+
+        setInterval(() => {
+            if (isPlaying) {
+                nextSlide();
+            }
+        }, 2500);
+        showSlide(0);
+
+        document.addEventListener('mousemove', (e) => {
+            const trail = document.createElement('div');
+            trail.style.position = 'fixed';
+            trail.style.left = e.clientX + 'px';
+            trail.style.top = e.clientY + 'px';
+            trail.style.width = '4px';
+            trail.style.height = '4px';
+            trail.style.background = 'rgba(255, 255, 255, 0.5)';
+            trail.style.borderRadius = '50%';
+            trail.style.pointerEvents = 'none';
+            trail.style.zIndex = '1000';
+            trail.style.animation = 'fadeOut 1s ease-out forwards';
+            
+            document.body.appendChild(trail);
+            
+            setTimeout(() => {
+                document.body.removeChild(trail);
+            }, 1000);
+        });
+        
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes fadeOut {
+                0% { opacity: 1; transform: scale(1); }
+                100% { opacity: 0; transform: scale(0); }
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+</body>
+</html>

@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Travel Offers - Tripzo</title>
+  <style>
+    body {
+  font-family: 'Segoe UI', Arial, sans-serif;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #ede7f6 0%, #fffde7 100%);
+  color: #27213c;
+  margin: 0;
+  padding: 0;
+}
+.container {
+  max-width: 1350px;
+  margin: 0 auto;
+  padding: 3px 16px 24px 16px;
+}
+header {
+  text-align: center;
+  margin-bottom: 30px;
+}
+header h1 {
+  font-size: 2.5em;
+  color: #5b2a86;
+  letter-spacing: 1px;
+  margin-bottom: 10px;
+  font-weight: 800;
+}
+header p {
+  font-size: 1.35em;
+  color: #574166;
+  margin-top: 0;
+  margin-bottom: 0;
+  letter-spacing: 0.25px;
+}
+.home-button {
+  position: fixed;
+  top: 4px;
+  left: 12px;
+  background: linear-gradient(90deg, #7c56c9 70%, #78aaff 100%);
+  color: #fff;
+  padding: 11px 20px;
+  text-decoration: none;
+  border-radius: 10px;
+  font-weight: bold;
+  font-size: 20px;
+  box-shadow: 0 3px 16px rgba(123, 70, 185, 0.14);
+  border: none;
+  transition: background 0.3s, transform 0.3s;
+  z-index: 10;
+}
+.home-button:hover {
+  background: linear-gradient(90deg, #592796 70%, #457fca 100%);
+  transform: translateY(-2px) scale(1.05);
+}
+.offers {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 48px;
+}
+.card {
+  background-color: #fff;
+  border-radius: 24px;
+  box-shadow: 0 14px 40px 0 rgba(91,42,134,0.10), 0 2px 10px rgba(0,0,0,0.07);
+  overflow: hidden;
+  width: 400px; 
+  display: flex;
+  flex-direction: column;
+  transition: box-shadow 0.3s, transform 0.3s;
+  align-items: center;
+}
+.card:hover {
+  box-shadow: 0 20px 60px 0 rgba(91,42,134,0.15), 0 6px 18px rgba(0,0,0,0.09);
+  transform: translateY(-8px) scale(1.025);
+}
+.card-image-wrapper {
+  padding: 0;
+  width: 88%;       
+  border-radius: 10px;
+  margin: 20px;
+  box-shadow: 0 0 0 7px rgba(123,70,185,0.12), 0 11px 24px rgba(91,42,134,0.10);
+  overflow: hidden;
+  background: linear-gradient(120deg, #b5f0ef 0%, #dee2ff 100%);
+  transition: box-shadow 0.3s;
+  position: relative;
+}
+.card-image-wrapper:hover {
+  box-shadow: 0 0 0 11px #dfc2f2, 0 16px 30px rgba(91,42,134,0.15);
+}
+.card img {
+  width: 100%;
+  height: 320px;  
+  object-fit: 100% 100%;
+  border-radius: 10px;
+  display: block;
+  transition: transform 0.3s;
+}
+.card img:hover {
+  transform: scale(1.04);
+}
+.badge {
+  position: absolute;
+  top: 14px;
+  right: 18px;
+  background: linear-gradient(120deg, #de48b8 0%, #a47cf3 100%);
+  color: #fff;
+  padding: 7px 17px;
+  border-radius: 7px;
+  font-size: 1.16em;
+  font-weight: bold;
+  box-shadow: 0 2px 16px rgba(180,90,200,0.13);
+  letter-spacing: 0.6px;
+  z-index: 2;
+}
+.card-content {
+  padding: 10px 16px 18px 16px; /* reduced padding */
+  text-align: center;
+  flex: 1 1 auto;
+}
+.card-content h2 {
+  font-size: 1.7em;
+  margin-bottom: 5px;
+  color: #4a148c;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+  margin-top: 4px;
+}
+.card-content p {
+  font-size: 1.15em;
+  color: #505050;
+  margin-top: 0px;
+  margin-bottom: 0px;
+  font-weight: 500;
+}
+@media (max-width: 1080px) {
+  .offers {
+    gap: 32px;
+  }
+  .card {
+    width: 95vw;
+    max-width: 460px;
+  }
+  .card img { height: 250px; }
+}
+@media (max-width: 720px) {
+  .offers {
+    flex-direction: column;
+    align-items: center;
+    gap: 26px;
+  }
+  .card {
+    width: 97vw;
+    min-width: unset;
+    max-width: 97vw;
+  }
+  .container {
+    padding: 18px 1vw 5vw 1vw;
+  }
+  header {
+    margin-bottom: 22px;
+    margin-top: 16px;
+  }
+  header h1{
+    font-size: 34px;
+  }
+  header p{
+    font-size: 18px;
+  }
+  .home-button{
+    font-size: 16px;
+
+      }
+}
+
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <a href="index.html" class="home-button">Home</a>
+      <h1>Explore Top Travel Deals</h1>
+      <p>Special offers on amazing destinations ✈️</p>
+    </header>
+    <section class="offers">
+      <div class="card">
+        <div class="card-image-wrapper">
+          <img src="images/paris.jpg" alt="Paris">
+          <span class="badge">25% OFF</span>
+        </div>
+        <div class="card-content">
+          <h2>Paris, France</h2>
+          <p>Starting from ₹41,857</p>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-image-wrapper">
+          <img src="images/bali, indonesia.cms" alt="Bali">
+          <span class="badge">30% OFF</span>
+        </div>
+        <div class="card-content">
+          <h2>Bali, Indonesia</h2>
+          <p>Starting from ₹60,214</p>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-image-wrapper">
+          <img src="images/city.jpg" alt="New York">
+          <span class="badge">15% OFF</span>
+        </div>
+        <div class="card-content">
+          <h2>New York, USA</h2>
+          <p>Starting from ₹34,467</p>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-image-wrapper">
+          <img src="images/bg-2.jpg" alt="Maldives">
+          <span class="badge">30% OFF</span>
+        </div>
+        <div class="card-content">
+          <h2>Maldives</h2>
+          <p>Starting from ₹47,417</p>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-image-wrapper">
+          <img src="images/museum.jpg" alt="Museums">
+          <span class="badge">15% OFF</span>
+        </div>
+        <div class="card-content">
+          <h2>Museums</h2>
+          <p>Starting from ₹24,788</p>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-image-wrapper">
+          <img src="images/temples.avif" alt="Temples India">
+          <span class="badge">25% OFF</span>
+        </div>
+        <div class="card-content">
+          <h2>Temples, India</h2>
+          <p>Starting from ₹37,053</p>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-image-wrapper">
+          <img src="images/mountain.jpg" alt="Mountains">
+          <span class="badge">15% OFF</span>
+        </div>
+        <div class="card-content">
+          <h2>Mountains</h2>
+          <p>Starting from ₹34,467</p>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-image-wrapper">
+          <img src="images/rome italy.avif" alt="Rome">
+          <span class="badge">30% OFF</span>
+        </div>
+        <div class="card-content">
+          <h2>Rome, Italy</h2>
+          <p>Starting from ₹60,380</p>
+        </div>
+      </div>
+    </section>
+  </div>
+</body>
+</html>

@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Login - TRIPZO</title>
+    <style>
+        * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-image: url("images/offer.jpg");
+        background-repeat: no-repeat;
+        background-size: cover; 
+        }
+
+        .login-container {
+        padding: 35px;
+        border-radius: 20px;
+        width: 550px;
+        box-shadow: 0 0 30px rgba(0, 204, 255, 0.4);
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        backdrop-filter: blur(13px);
+        text-align: center;
+        position: relative;
+        overflow: hidden;
+        z-index: 1;
+        }
+
+        .login-container h2 {
+        color: black;
+        font-size: 28px;
+        margin-bottom: 20px;
+        text-shadow: 0 0 15px rgba(0, 204, 255, 0.6);
+        }
+
+        .login-container h2::after {
+        content: "";
+        display: block;
+        width: 50px;
+        height: 3px;
+        background: linear-gradient(90deg, #7a6fff, #00ccff);
+        margin: 10px auto 0;
+        border-radius: 3px;
+        }
+
+        label {
+        display: block;
+        text-align: left;
+        color: black;
+        font-size: 14px;
+        margin-bottom: 6px;
+        font-weight: 500;
+        }
+
+        input[type=email],
+        input[type=password],
+        input[type=text] {
+        width: 100%;
+        padding: 12px;
+        border-radius: 10px;
+        border: 2px solid rgba(122, 111, 255, 0.3);
+        color: black;
+        outline: none;
+        font-size: 15px;
+        margin-bottom: 18px;
+        transition: border-color 0.3s ease, box-shadow 0.3s ease, padding 0.3s ease;
+        box-sizing: border-box;
+        }
+
+        input:focus {
+        border-color: #00ccff;
+        box-shadow: 0 0 15px rgba(0, 204, 255, 0.5);
+        }
+
+        .input-wrapper {
+            position: relative;
+            width: 100%;
+            margin-bottom: 18px;
+        }
+
+        .input-wrapper input[type="password"],
+        .input-wrapper input[type="text"] {
+            padding-right: 45px;
+            padding-left: 12px;
+        }
+
+        .toggle-password {
+            position: absolute;
+            right: 12px;
+            top: 40%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            z-index: 1;
+            width: 26px; 
+            height: 26px; 
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .eye-icon {
+            width: 26px !important; 
+            height: 26px !important; 
+            transition: opacity 0.2s ease;
+        }
+
+        .toggle-password:hover .eye-icon {
+            opacity: 0.8;
+        }
+
+        #login-btn {
+        background: linear-gradient(45deg, #7a6fff, #00ccff);
+        color: #fff;
+        font-weight: bold;
+        border: none;
+        border-radius: 10px;
+        padding: 14px;
+        width: 100%;
+        cursor: pointer;
+        font-size: 16px;
+        margin-top: 10px;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        #login-btn:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 0 20px rgba(0, 204, 255, 0.7);
+        }
+
+        .register-option {
+        margin-top: 20px;
+        font-weight: 450;
+        color: rgba(8, 15, 4, 0.86);
+        font-size: 15px;
+        }
+
+        .register-option a {
+        color: blanchedalmond;
+        font-weight: bold;
+        margin-left: 15px;
+        text-decoration: none;
+        transition: color 0.3s ease;
+        }
+
+        .register-option a:hover {
+        color: greenyellow;
+        text-decoration: underline;
+        }
+
+        /* Responsive styles for tablets and smaller desktops (up to 768px) */
+        @media (max-width: 768px) {
+            body {
+                background-position: center;
+            }
+
+            .login-container {
+                width: 85%;
+                padding: 25px;
+            }
+
+            .login-container h2 {
+                font-size: 24px;
+                margin-bottom: 15px;
+            }
+
+            input[type="email"],
+            input[type="password"],
+            input[type="text"] {
+                padding: 10px;
+                font-size: 14px;
+                margin-bottom: 15px;
+            }
+
+            .input-wrapper input[type="password"],
+            .input-wrapper input[type="text"] {
+                padding-right: 40px;
+            }
+
+            #login-btn {
+                padding: 12px;
+                font-size: 15px;
+            }
+
+            .register-option {
+                font-size: 14px;
+            }
+        }
+
+        /* Responsive styles for mobile phones (up to 480px) */
+        @media (max-width: 480px) {
+            body {
+                background-position: center; 
+            }
+            
+            .login-container {
+                width: 95%;
+                padding: 20px;
+            }
+
+            .login-container h2 {
+                font-size: 20px;
+                margin-bottom: 10px;
+            }
+            
+            .login-container h2::after {
+                width: 40px;
+                height: 2px;
+            }
+
+            input[type="email"],
+            input[type="password"],
+            input[type="text"] {
+                padding: 8px;
+                font-size: 13px;
+                margin-bottom: 10px;
+            }
+
+            .input-wrapper input[type="password"],
+            .input-wrapper input[type="text"] {
+                padding-right: 35px;
+            }
+
+            #login-btn {
+                padding: 10px;
+                font-size: 14px;
+                margin-top: 5px;
+            }
+
+            .register-option {
+                font-size: 13px;
+                margin-top: 15px;
+            }
+            
+            .register-option a {
+                margin-left: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="login-container">
+        <h2>Login</h2>
+        <form id="login-form">
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" required placeholder="Enter your email.." />
+
+            <label for="password">Password</label>
+            <div class="input-wrapper">
+                <input type="password" id="password" name="password" placeholder="Enter your password.." required />
+                <span class="toggle-password">
+                    <svg class="eye-icon open-eye" viewBox="0 0 24 24" fill="none">
+                        <path d="M12 4.5C7 4.5 2.73 7.61 1 12C2.73 16.39 7 19.5 12 19.5C17 19.5 21.27 16.39 23 12C21.27 7.61 17 4.5 12 4.5ZM12 17C9.24 17 7 14.76 7 12C7 9.24 9.24 7 12 7C14.76 7 17 9.24 17 12C17 14.76 14.76 17 12 17ZM12 9C10.34 9 9 10.34 9 12C9 13.66 10.34 15 12 15C13.66 15 15 13.66 15 12C15 10.34 13.66 9 12 9Z" fill="#00ccff"/>
+                    </svg>
+                    <svg class="eye-icon closed-eye" viewBox="0 0 24 24" fill="none" style="display: none;">
+                        <path d="M12 9C10.34 9 9 10.34 9 12C9 13.66 10.34 15 12 15C13.66 15 15 13.66 15 12C15 10.34 13.66 9 12 9ZM12 4.5C7 4.5 2.73 7.61 1 12C2.73 16.39 7 19.5 12 19.5C17 19.5 21.27 16.39 23 12C20.09 7.61 16.91 4.5 12 4.5ZM12 17C9.24 17 7 14.76 7 12C7 9.24 9.24 7 12 7C14.76 7 17 9.24 17 12C16.07 14.76 14.07 16.66 12 17ZM12 13.5C11.17 13.5 10.5 12.83 10.5 12C10.5 11.17 11.17 10.5 12 10.5C12.83 10.5 13.5 11.17 13.5 12C13.5 12.83 12.83 13.5 12 13.5Z" fill="#7a6fff"/>
+                        <line x1="2" y1="2" x2="22" y2="22" stroke="#7a6fff" stroke-width="2"/>
+                    </svg>
+                </span>
+            </div>
+
+            <button type="submit" id="login-btn">Login</button>
+        </form>
+
+        <div class="register-option">
+            Don't have an account? <a href="registration_form.html">Register here</a>
+        </div>
+    </div>
+
+    <script>
+        const form = document.getElementById('login-form');
+        const loginBtn = document.getElementById('login-btn');
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const email = document.getElementById('email').value.trim();
+            const password = document.getElementById('password').value;
+
+            try {
+                const response = await fetch('http://localhost:3000/api/auth/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, password }),
+                });
+
+                const result = await response.json();
+
+                if (response.ok) {
+                    alert('Login successful!');
+                    localStorage.setItem('token', result.token);
+                    window.location.href = 'index.html'; 
+                } else {
+                    alert(result.msg || 'Login failed: Invalid credentials');
+                }
+            } catch (error) {
+                alert('Failed to connect to server: ' + error.message);
+                console.error(error);
+            }
+        });
+
+        // Add toggle functionality for the eye icon
+        document.addEventListener("DOMContentLoaded", function() {
+            document.querySelectorAll('.toggle-password').forEach(toggle => {
+                toggle.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    const input = this.previousElementSibling;
+                    const openEye = this.querySelector('.open-eye');
+                    const closedEye = this.querySelector('.closed-eye');
+                    if (input.type === 'password') {
+                        input.type = 'text';
+                        openEye.style.display = 'none';
+                        closedEye.style.display = 'block';
+                    } else {
+                        input.type = 'password';
+                        openEye.style.display = 'block';
+                        closedEye.style.display = 'none';
+                    }
+                });
+            });
+        });
+    </script>
+
+</body>
+</html>

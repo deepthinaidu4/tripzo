@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Bookings - Tripzo</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+   <style>
+/* Main Styles */
+:root {
+    --primary-color: #6a11cb;
+    --secondary-color: #2575fc;
+    --accent-color: #ff6b6b;
+    --background-start: #f8f9fa;
+    --background-end: #e9ecef;
+    --card-background: #ffffff;
+    --text-dark: #343a40;
+    --text-muted: #6c757d;
+    --shadow-light: rgba(0, 0, 0, 0.05);
+    --shadow-medium: rgba(0, 0, 0, 0.1);
+    --border-color: #e0e0e0;
+}
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+body {
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(135deg, var(--background-start) 0%, var(--background-end) 100%);
+    min-height: 100vh;
+    color: var(--text-dark);
+}
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+body::-webkit-scrollbar {
+    width: 0px;
+    background: transparent;
+}
+body {
+    scrollbar-width: none;
+}
+.header-container {
+    background-color: var(--card-background);
+    border-bottom: 1px solid var(--border-color);
+    box-shadow: 0 2px 8px var(--shadow-light);
+    padding: 15px 20px;
+    text-align: center;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: center; /* Center the entire header wrapper */
+}
+.header-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    max-width: 1200px; /* Constrain the header wrapper */
+    position: relative;
+}
+header {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--primary-color);
+    flex-grow: 1;
+    text-align: center;
+}
+.header-subtitle {
+    font-size: 14px;
+    font-weight: 400;
+    color: var(--text-muted);
+    margin-top: 5px;
+}
+.home-button {
+    background: linear-gradient(90deg, #7c56c9 70%, #78aaff 100%);
+    color: #fff;
+    padding: 10px 18px;
+    text-decoration: none;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 16px;
+    box-shadow: 0 3px 10px rgba(123, 70, 185, 0.2);
+    border: none;
+    transition: background 0.3s, transform 0.3s, box-shadow 0.3s;
+    z-index: 10;
+    flex-shrink: 0;
+}
+.home-button:hover {
+    background: linear-gradient(90deg, #592796 70%, #457fca 100%);
+    transform: scale(1.05);
+    box-shadow: 0 5px 15px rgba(123, 70, 185, 0.3);
+}
+.container {
+    max-width: 1200px;
+    margin: 40px auto;
+    padding: 0 20px;
+}
+.bookings-grid {
+    display: grid;
+    gap: 30px;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    justify-content: center;
+}
+.loading-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 400px;
+    color: var(--text-muted);
+    grid-column: 1 / -1;
+    width: 100%;
+}
+.loading-spinner {
+    width: 60px;
+    height: 60px;
+    border: 4px solid var(--border-color);
+    border-top: 4px solid var(--primary-color);
+    border-radius: 50%;
+    animation: spin 3s cubic-bezier(0.68, -0.55, 0.27, 1.55) infinite;
+    margin-bottom: 20px;
+}
+.booking-card {
+    background: var(--card-background);
+    border-radius: 15px;
+    width: min(100%, 400px);
+    padding: 25px;
+    box-shadow: 0 10px 20px var(--shadow-medium);
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+    border: 1px solid var(--border-color);
+    display: flex;
+    flex-direction: column;
+}
+.booking-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 30px var(--shadow-medium);
+}
+.booking-header {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 15px;
+    color: var(--primary-color);
+    display: flex;
+    align-items: center;
+}
+.destination-icon {
+    width: 32px;
+    height: 32px;
+    background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: 600;
+    font-size: 14px;
+    margin-right: 10px;
+    flex-shrink: 0;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+.booking-details {
+    display: grid;
+    gap: 10px;
+    flex-grow: 1;
+}
+.detail-row {
+    display: flex;
+    align-items: flex-start;
+    border-bottom: 1px dashed var(--border-color);
+    padding-bottom: 15px;
+}
+.detail-row:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+}
+.detail-icon {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 12px;
+    font-size: 18px;
+    background-color: #f1f3f5;
+    flex-shrink: 0;
+}
+.detail-content {
+    flex: 1;
+}
+.detail-label {
+    font-weight: 500;
+    color: var(--text-muted);
+    font-size: 12px;
+    display: block;
+    text-transform: uppercase;
+}
+.detail-value {
+    color: var(--text-dark);
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 1.4;
+}
+.status-container {
+    text-align: right;
+    margin-top: auto;
+    padding-top: 15px;
+}
+.status {
+    display: inline-flex;
+    align-items: center;
+    padding: 6px 15px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    box-shadow: 0 4px 10px var(--shadow-light);
+    transition: all 0.3s ease;
+}
+.status.pending {
+    background-color: #fff3cd;
+    color: #856404;
+}
+.status.confirmed {
+    background-color: #d4edda;
+    color: #155724;
+}
+.status.cancelled {
+    background-color: #f8d7da;
+    color: #721c24;
+}
+.price-highlight {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--accent-color);
+}
+.empty-state {
+    text-align: center;
+    color: var(--text-muted);
+    padding: 60px 20px;
+    width: 100%;
+}
+.empty-state h3 {
+    font-size: 1.4rem;
+    margin-bottom: 10px;
+}
+.empty-state p {
+    font-size: 0.7rem;
+    opacity: 0.9;
+}
+.empty-state-icon {
+    font-size: 2rem;
+    margin-bottom: 15px;
+}
+
+/* Responsive Styles */
+@media (max-width: 992px) {
+    .container {
+        margin: 30px auto;
+        padding: 0 15px;
+    }
+    .bookings-grid {
+        gap: 20px;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    }
+    .booking-card {
+        padding: 20px;
+    }
+    .home-button {
+        padding: 9px 16px;
+        font-size: 15px;
+    }
+    .header-container {
+        padding: 12px;
+    }
+    header {
+        font-size: 22px;
+    }
+    .header-subtitle {
+        font-size: 13px;
+    }
+}
+@media (max-width: 600px) {
+    .container {
+        margin: 20px auto;
+        padding: 0 10px;
+    }
+    .bookings-grid {
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+    .booking-card {
+        padding: 15px;
+    }
+    .header-container {
+        padding: 15px 10px;
+        /* Revert to side-by-side alignment */
+        flex-direction: row;
+        justify-content: space-between;
+    }
+    .header-wrapper {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: auto;
+    }
+    .home-button {
+        padding: 8px 14px;
+        font-size: 14px;
+        position: static;
+        margin-right: 15px;
+    }
+    header {
+        font-size: 20px;
+    }
+    .header-subtitle {
+        font-size: 12px;
+    }
+    .booking-header {
+        font-size: 16px;
+    }
+    .detail-icon {
+        width: 28px;
+        height: 28px;
+        font-size: 16px;
+    }
+    .detail-label {
+        font-size: 11px;
+    }
+    .detail-value {
+        font-size: 13px;
+    }
+}
+</style>
+</head>
+<body>
+   <div class="header-container">
+    <div class="header-wrapper">
+        <a href="index.html" class="home-button">Home</a>
+        <header>
+            My Bookings
+            <div class="header-subtitle">Your travel plans, all in one place</div>
+        </header>
+      </div>
+   </div>
+
+    <div class="container">
+        <div class="bookings-grid" id="bookingsContainer">
+            <div class="loading-container">
+                <div class="loading-spinner"></div>
+                <p>Loading your amazing trips...</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        async function fetchBookings() {
+            const container = document.getElementById("bookingsContainer");
+
+            try {
+                const token = localStorage.getItem("token");
+                if (!token) {
+                    container.innerHTML = `
+                        <div class="empty-state">
+                            <span class="empty-state-icon">🔒</span>
+                            <h3>Please log in to see your bookings</h3>
+                            <p>Sign in to access your travel bookings and itineraries</p>
+                        </div>
+                    `;
+                    return;
+                }
+
+                const [res] = await Promise.all([
+                    fetch("http://localhost:3000/api/bookings/my-bookings", {
+                        headers: { "Authorization": "Bearer " + token }
+                    }),
+                    new Promise(resolve => setTimeout(resolve, 2000)) 
+                ]);
+
+                if (!res.ok) {
+                    container.innerHTML = `
+                        <div class="empty-state">
+                            <span class="empty-state-icon">🤷‍♂️</span>
+                            <h3>No bookings found</h3>
+                            <p>Start planning your next adventure today!</p>
+                        </div>
+                    `;
+                    return;
+                }
+
+                const data = await res.json();
+                container.innerHTML = "";
+
+                data.bookings.forEach((booking, index) => {
+                    const card = document.createElement("div");
+                    card.className = "booking-card";
+
+                    const destinationInitial = booking.destination.charAt(0).toUpperCase();
+
+                    card.innerHTML = `
+                        <div class="booking-header">
+                            <div class="destination-icon">${destinationInitial}</div>
+                            Trip to ${booking.destination}
+                        </div>
+                        <div class="booking-details">
+                            <div class="detail-row">
+                                <div class="detail-icon">📅</div>
+                                <div class="detail-content">
+                                    <span class="detail-label">Travel Date</span>
+                                    <div class="detail-value">${new Date(booking.tripDate).toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}</div>
+                                </div>
+                            </div>
+                            
+                            <div class="detail-row">
+                                <div class="detail-icon">👥</div>
+                                <div class="detail-content">
+                                    <span class="detail-label">Travel Party</span>
+                                    <div class="detail-value">${booking.numberOfMembers} travelers (${booking.companions})</div>
+                                </div>
+                            </div>
+                            
+                            <div class="detail-row">
+                                <div class="detail-icon">✈️</div>
+                                <div class="detail-content">
+                                    <span class="detail-label">Flight</span>
+                                    <div class="detail-value">${booking.flight.name} • ${booking.flight.seatCount} seats reserved</div>
+                                </div>
+                            </div>
+                            
+                            <div class="detail-row">
+                                <div class="detail-icon">🏨</div>
+                                <div class="detail-content">
+                                    <span class="detail-label">Accommodation</span>
+                                    <div class="detail-value">${booking.hotel.name} • ${booking.hotel.roomType} • ${booking.hotel.nights} nights</div>
+                                </div>
+                            </div>
+                            
+                            <div class="detail-row">
+                                <div class="detail-icon">🚗</div>
+                                <div class="detail-content">
+                                    <span class="detail-label">Transportation</span>
+                                    <div class="detail-value">${booking.vehicle.name} • ${booking.vehicle.passengerCount} passengers</div>
+                                </div>
+                            </div>
+                            
+                            <div class="detail-row">
+                                <div class="detail-icon">💰</div>
+                                <div class="detail-content">
+                                    <span class="detail-label">Total Investment</span>
+                                    <div class="detail-value price-highlight">₹${booking.price.totalPrice.toLocaleString()}</div>
+                                </div>
+                            </div>
+                            
+                            <div class="detail-row">
+                                <div class="detail-icon">💳</div>
+                                <div class="detail-content">
+                                    <span class="detail-label">Payment Method</span>
+                                    <div class="detail-value">${booking.paymentMethod}</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="status-container">
+                            <span class="status ${booking.status}">${booking.status}</span>
+                        </div>
+                    `;
+                    container.appendChild(card);
+                });
+            } catch (err) {
+                console.error("Error fetching bookings:", err);
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <span class="empty-state-icon">⚠️</span>
+                        <h3>Unable to load bookings</h3>
+                        <p>Please check your connection and try again</p>
+                    </div>
+                `;
+            }
+        }
+        fetchBookings();
+    </script>
+</body>
+</html>

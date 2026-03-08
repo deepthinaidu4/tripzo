@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Emergency</title>
+</head>
+<body>
+      <div class="emergency-contacts">
+      <div class="contact-card">
+        <h3>Your Number</h3>
+        <div class="contact-number"><span id="user-phone">Fetching...</span></div>
+        <a href="tel:112" class="contact-btn" id="call-user-btn" style="display:none;">Call Now</a>
+      </div>
+
+      <div class="contact-card">
+        <h3>Emergency Contact</h3>
+        <div class="contact-number"><span id="emergency-phone">Fetching...</span></div>
+        <a href="tel:112" class="contact-btn" id="call-emergency-btn" style="display:none;">Call Now</a>
+      </div>
+
+      <div class="contact-card">
+        <h3>Local Emergency Services</h3>
+        <div class="contact-number">112 / 911</div>
+        <a href="tel:112" class="contact-btn">Call Now</a>
+      </div>
+    </div>
+
+    <script>
+      const API_URL = 'http://localhost:3000';
+
+      window.onload = function() {
+        getLocation();
+        fetchEmergencyDetails();
+      };
+
+      async function fetchEmergencyDetails() {
+        const userPhoneSpan = document.getElementById('user-phone');
+        const emergencyPhoneSpan = document.getElementById('emergency-phone');
+        const userCallBtn = document.getElementById('call-user-btn');
+        const emergencyCallBtn = document.getElementById('call-emergency-btn');
+
+        try {
+          const response = await fetch(`${API_URL}/api/bookings/emergency-details`, {
+              method: 'GET',
+              headers: {
+                  'Content-Type': 'application/json',
+                  'Authorization': `Bearer YOUR_AUTH_TOKEN_HERE` 
+              },
+          });
+
+          if (!response.ok) {
+              const errorData = await response.json();
+              throw new Error(errorData.message || 'Failed to fetch details.');
+          }
+
+          const data = await response.json();
+          
+          userPhoneSpan.textContent = data.phoneNumber || 'N/A';
+          emergencyPhoneSpan.textContent = data.emergencyContact || 'N/A';
+          
+          userCallBtn.href = `tel:${data.phoneNumber}`;
+          emergencyCallBtn.href = `tel:${data.emergencyContact}`;
+          userCallBtn.style.display = 'inline-block';
+          emergencyCallBtn.style.display = 'inline-block';
+
+        } catch (error) {
+          console.error('Error fetching emergency details:', error);
+          userPhoneSpan.textContent = 'Error loading.';
+          emergencyPhoneSpan.textContent = 'Error loading.';
+        }
+      }
+    </script>
+  
+</body>
+</html>

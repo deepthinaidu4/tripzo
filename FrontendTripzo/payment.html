@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Make a Payment</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #e6d3f2, #d1a8e2, #b886d1);
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        .payment-container {
+            background-color: white;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            width: 90%;
+            max-width: 600px;
+        }
+        h1 {
+            color: #6a0dad;
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+        }
+        .payment-options {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        .payment-btn {
+            padding: 15px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .payment-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        .upi-btn { background-color: #580f91; }
+        .net-banking-btn { background-color: #6a0dad; }
+        .card-btn { background-color: #8b42a2; }
+        .loading-text {
+            display: none;
+            margin-top: 20px;
+            font-size: 1.2rem;
+            color: #6a0dad;
+        }
+
+        /* Responsive styles for tablets and smaller desktops (up to 768px) */
+@media (max-width: 768px) {
+    .payment-container {
+        padding: 30px;
+    }
+    h1 {
+        font-size: 2rem;
+    }
+    .payment-btn {
+        padding: 12px;
+        font-size: 1.1rem;
+    }
+    .loading-text {
+        font-size: 1rem;
+    }
+}
+
+/* Responsive styles for mobile phones (up to 480px) */
+@media (max-width: 480px) {
+    .payment-container {
+        padding: 20px;
+    }
+    h1 {
+        font-size: 1.8rem;
+        margin-bottom: 15px;
+    }
+    .payment-options {
+        gap: 10px;
+    }
+    .payment-btn {
+        padding: 10px;
+        font-size: 1rem;
+    }
+    .loading-text {
+        font-size: 0.9rem;
+    }
+}
+    </style>
+</head>
+<body>
+    <div class="payment-container">
+        <h1>Select Payment Method</h1>
+        <p>Your total is: <span id="payment-amount"></span></p>
+        <div class="payment-options">
+            <button class="payment-btn upi-btn" data-type="UPI">Pay with UPI</button>
+            <button class="payment-btn net-banking-btn" data-type="Net Banking">Pay with Net Banking</button>
+            <button class="payment-btn card-btn" data-type="Card">Pay with Credit/Debit Card</button>
+        </div>
+        <p class="loading-text" id="loading-text">Processing payment... Please wait.</p>
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const params = new URLSearchParams(window.location.search);
+            const bookingData = JSON.parse(decodeURIComponent(params.get('data')));
+            
+            if (bookingData && bookingData.price && bookingData.price.totalPrice) {
+                document.getElementById('payment-amount').textContent = `₹${bookingData.price.totalPrice.toFixed(2)}`;
+            }
+
+            const paymentButtons = document.querySelectorAll('.payment-btn');
+            const loadingText = document.getElementById('loading-text');
+
+            paymentButtons.forEach(button => {
+                button.addEventListener('click', async () => {
+                    const paymentMethod = button.dataset.type;
+                    loadingText.style.display = 'block';
+                    paymentButtons.forEach(btn => btn.disabled = true);
+                    await new Promise(resolve => setTimeout(resolve, 2000));
+                    const finalBookingData = { ...bookingData, paymentMethod };
+
+                const token = localStorage.getItem('token'); 
+                if (!token) {
+                    alert('You must be logged in to book a trip. Please log in first.');
+                    loadingText.style.display = 'none';
+                    paymentButtons.forEach(btn => btn.disabled = false);
+                    return;
+                }
+
+                try {
+                    const response = await fetch('http://localhost:3000/api/bookings', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': `Bearer ${token}` 
+                        },
+                        body: JSON.stringify(finalBookingData),
+                    });
+
+                        const result = await response.json();
+
+                        if (response.ok) {
+                            alert('Payment successful! Your trip is booked.');
+                            window.location.href = `index.html`; 
+                        } else {
+                            alert('Payment failed: ' + (result.message || 'An error occurred.'));
+                            loadingText.style.display = 'none';
+                            paymentButtons.forEach(btn => btn.disabled = false);
+                        }
+                    } catch (error) {
+                        console.error('Booking failed:', error);
+                        alert('Booking failed. Please try again.');
+                        loadingText.style.display = 'none';
+                        paymentButtons.forEach(btn => btn.disabled = false);
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>

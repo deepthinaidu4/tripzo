@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Book Your Trip</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #e6d3f2, #d1a8e2, #b886d1);
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .home-button {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background-color: #8b42a2;
+            color: white;
+            padding: 12px 20px;
+            text-decoration: none;
+            border-radius: 6px;
+            font-weight: bold;
+            z-index: 1000;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+            transition: background-color 0.3s;
+        }
+        .home-button:hover {
+            background-color: #580f91;
+        }
+
+        .booking-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 40px;
+            max-width: 1200px;
+            width: 95%;
+            padding: 40px;
+            background-color: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        .booking-form-section, .price-breakdown-section {
+            flex: 1;
+            min-width: 300px;
+            padding: 20px;
+            border-radius: 15px;
+            background-color: #fff;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        .booking-form-section {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+
+        @media (max-width: 900px) {
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .booking-form-section h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 25px;
+            font-size: 2.5rem;
+            font-weight: 300;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+        
+        .form-group:nth-of-type(odd) {
+            grid-column: 1;
+        }
+        .form-group:nth-of-type(even) {
+            grid-column: 2;
+        }
+        @media (max-width: 900px) {
+            .form-group {
+                grid-column: span 2;
+            }
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #555;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 12px;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+            font-size: 16px;
+            box-sizing: border-box;
+            background-color: #f9f9f9;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #8b42a2;
+            box-shadow: 0 0 5px rgba(139, 66, 162, 0.5);
+        }
+        
+        .price-breakdown-section {
+            background-color: #f9f5ff;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+
+        .price-breakdown-section h3 {
+            color: #6a0dad;
+            margin-top: 0;
+            text-align: center;
+            font-size: 2rem;
+            font-weight: 400;
+            border-bottom: 2px solid #8b42a2;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+
+        .price-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        .price-table tr td {
+            padding: 12px 0;
+            border-bottom: 1px dashed #e0d0f0;
+        }
+
+        .price-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .price-table .label {
+            color: #555;
+            font-size: 1.1em;
+        }
+        
+        .price-table .value {
+            text-align: right;
+            font-weight: bold;
+            color: #333;
+            font-size: 1.1em;
+        }
+        
+        .price-table .total-row {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #333;
+            border-top: 2px solid #8b42a2;
+            padding-top: 15px !important;
+        }
+
+        .book-btn {
+            width: 100%;
+            padding: 18px;
+            background-color: #6a0dad;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.2s;
+            margin-top: 20px;
+        }
+
+        .book-btn:hover {
+            background-color: #580f91;
+            transform: translateY(-2px);
+        }
+        .book-btn:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .alert-box {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: white;
+            padding: 25px;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            z-index: 2000;
+            text-align: center;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .alert-box button {
+            background-color: #6a0dad;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            margin-top: 15px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <a href="index.html" class="home-button">Home</a>
+    <div class="booking-container">
+        <div class="booking-form-section">
+            <h1 id="trip-destination-title">Book Your Trip</h1>
+            <form id="booking-form">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="origin">Your Starting City</label>
+                        <input type="text" id="origin" name="origin" placeholder="e.g., Hyderabad" value="Hyderabad" required />
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="tripDate">Date of Trip</label>
+                        <input type="date" id="tripDate" name="tripDate" required />
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="members">Number of Members</label>
+                        <input type="number" id="members" name="members" min="1" value="1" required />
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="nights">Number of Nights</label>
+                        <input type="number" id="nights" name="nights" min="1" value="1" required />
+                    </div>
+
+                    <div class="form-group">
+                            <label for="phoneNumber">Your Phone Number</label>
+                            <input type="tel" id="phoneNumber" name="phoneNumber" placeholder="e.g., +91-9876543210" required />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="emergencyContact">Emergency Contact Number</label>
+                        <input type="tel" id="emergencyContact" name="emergencyContact" placeholder="e.g., +91-9876543210" />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="companions">With Family or Friends?</label>
+                        <select id="companions" name="companions" required>
+                            <option value="">-- Select --</option>
+                            <option value="single">Single</option>
+                            <option value="family">Family</option>
+                            <option value="friends">Friends</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="flight-select">Select a Flight</label>
+                        <select id="flight-select" name="selectedFlight" required>
+                            <option value="">-- Select Flight --</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="vehicle-select">Select Local Vehicle</label>
+                        <select id="vehicle-select" name="selectedVehicle" required>
+                            <option value="">-- Select Vehicle --</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="hotel-select">Select Hotel</label>
+                        <select id="hotel-select" name="selectedHotel" required>
+                            <option value="">-- Select Hotel --</option>
+                        </select>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <div class="price-breakdown-section">
+            <h3 id="price-title">Price Breakdown</h3>
+            <div id="price-breakdown">
+                <p>Please fill all fields to see the price.</p>
+            </div>
+            <button type="submit" id="book-trip-btn" class="book-btn" form="booking-form" disabled>Book My Trip</button>
+        </div>
+    </div>
+    
+    <script>
+        const API_URL = 'http://localhost:3000';
+
+        function showAlert(message) {
+            const alertBox = document.createElement('div');
+            alertBox.classList.add('alert-box');
+            alertBox.innerHTML = `<p>${message}</p><button>OK</button>`;
+            document.body.appendChild(alertBox);
+            alertBox.querySelector('button').addEventListener('click', () => {
+                document.body.removeChild(alertBox);
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', async () => {
+            const params = new URLSearchParams(window.location.search);
+            const destination = params.get('destination');
+
+            if (!destination) {
+                showAlert('No destination selected. Redirecting...');
+                setTimeout(() => window.location.href = 'services.html', 1500);
+                return;
+            }
+
+            document.getElementById('trip-destination-title').textContent = `Book Your Trip to ${decodeURIComponent(destination)}`;
+
+            const originInput = document.getElementById('origin');
+            const membersInput = document.getElementById('members');
+            const nightsInput = document.getElementById('nights');
+            const flightSelect = document.getElementById('flight-select');
+            const vehicleSelect = document.getElementById('vehicle-select');
+            const hotelSelect = document.getElementById('hotel-select');
+            const priceBreakdown = document.getElementById('price-breakdown');
+            const bookBtn = document.getElementById('book-trip-btn');
+            
+            let tripData = null;
+
+            const fetchTripDetails = async () => {
+                try {
+                    const response = await fetch(`${API_URL}/api/trips/${encodeURIComponent(destination)}`);
+                    const result = await response.json();
+                    
+                    if (!response.ok) {
+                        showAlert(result.message || 'Failed to fetch trip details. Please try another destination.');
+                        return;
+                    }
+
+                    tripData = result; 
+                    populateSelect(flightSelect, tripData.trip.flights, 'name', 'price', ' ($', ')');
+                    populateSelect(vehicleSelect, tripData.trip.vehicles, 'name', 'price', ' ($', ')');
+                    populateSelect(hotelSelect, tripData.hotels, '_id', 'pricePerNight', ' ($', ' / night)');
+
+                    updatePrice();
+                } catch (error) {
+                    console.error('Error fetching trip details:', error);
+                    showAlert('An error occurred. Please check the server.');
+                }
+            };
+            
+            const populateSelect = (selectElement, data, valueKey, textKey, prefix = '', suffix = '') => {
+                selectElement.innerHTML = `<option value="">-- Select --</option>`;
+                if (!Array.isArray(data)) {
+                    console.error('Expected an array but got:', data);
+                    return;
+                }
+                data.forEach(item => {
+                    const option = document.createElement('option');
+                    option.value = item[valueKey];
+                    let text = item.name;
+                    if (item.roomType) {
+                        text += ` (${item.roomType})`;
+                    }
+                    text += `${prefix}${item[textKey]}${suffix}`;
+                    option.textContent = text;
+                    selectElement.appendChild(option);
+                });
+            };
+
+            const updatePrice = async () => {
+                const formFields = [originInput, membersInput, nightsInput, flightSelect, vehicleSelect, hotelSelect];
+                const allFieldsFilled = formFields.every(field => {
+                    if (field.type === 'number') {
+                        return field.value.trim() !== '' && !isNaN(field.value) && parseInt(field.value) > 0;
+                    }
+                    return field.value.trim() !== '';
+                });
+                
+                if (!allFieldsFilled) {
+                    priceBreakdown.innerHTML = '<p>Please fill all fields to see the price.</p>';
+                    bookBtn.disabled = true;
+                    return;
+                }
+
+                priceBreakdown.innerHTML = '<p>Calculating price...</p>';
+
+                const payload = {
+                    origin: originInput.value,
+                    destination: decodeURIComponent(destination),
+                    numberOfMembers: parseInt(membersInput.value),
+                    selectedFlight: flightSelect.value,
+                    selectedVehicle: vehicleSelect.value,
+                    selectedHotel: hotelSelect.value,
+                    nights: parseInt(nightsInput.value)
+                };
+
+                try {
+                    const response = await fetch(`${API_URL}/api/bookings/calculate-price`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+
+                    if (!response.ok) {
+                        const errorData = await response.json();
+                        throw new Error(errorData.message || 'Failed to calculate price.');
+                    }
+
+                    const result = await response.json();
+                    renderPriceBreakdown(result.breakdown);
+                    bookBtn.disabled = false;
+                } catch (error) {
+                    console.error('Calculation error:', error.message);
+                    priceBreakdown.innerHTML = `<p>${error.message}</p>`;
+                    bookBtn.disabled = true;
+                }
+            };
+
+            const renderPriceBreakdown = (breakdown) => {
+                priceBreakdown.innerHTML = `
+                    <table class="price-table">
+                        <tbody>
+                            <tr><td class="label">Flight:</td><td class="value">₹${breakdown.flightPrice.toFixed(2)}</td></tr>
+                            <tr><td class="label">Hotel:</td><td class="value">₹${breakdown.hotelPrice.toFixed(2)}</td></tr>
+                            <tr><td class="label">Local Vehicle:</td><td class="value">₹${breakdown.vehiclePrice.toFixed(2)}</td></tr>
+                            <tr><td class="label">Discounts:</td><td class="value">- ₹${breakdown.discounts.toFixed(2)}</td></tr>
+                            <tr><td class="label">Taxes:</td><td class="value">+ ₹${breakdown.taxes.toFixed(2)}</td></tr>
+                            <tr><td class="label">Service Charges:</td><td class="value">+ ₹${breakdown.serviceCharges.toFixed(2)}</td></tr>
+                            <tr class="total-row"><td class="label">Total Price:</td><td class="value">₹${breakdown.totalPrice.toFixed(2)}</td></tr>
+                        </tbody>
+                    </table>
+                `;
+            };
+
+            document.getElementById('booking-form').addEventListener('change', updatePrice);
+            document.getElementById('booking-form').addEventListener('input', updatePrice);
+            
+            document.getElementById('booking-form').addEventListener('submit', async (e) => {
+                    e.preventDefault();
+
+                    const payload = {
+                        origin: originInput.value,
+                        destination: decodeURIComponent(destination),
+                        numberOfMembers: parseInt(membersInput.value),
+                        nights: parseInt(nightsInput.value),
+                        phoneNumber: document.getElementById('phoneNumber').value,
+                        emergencyContact: document.getElementById('emergencyContact').value,
+                        companions: document.getElementById('companions').value,
+                        selectedFlight: flightSelect.value,
+                        selectedVehicle: vehicleSelect.value,
+                        selectedHotel: hotelSelect.value,
+                        tripDate: document.getElementById('tripDate').value,
+                    };
+
+                    try {
+                        const priceResponse = await fetch(`${API_URL}/api/bookings/calculate-price`, {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify(payload)
+                        });
+                        const priceResult = await priceResponse.json();
+
+                        if (!priceResponse.ok) {
+                            showAlert(priceResult.message || 'Failed to finalize price.');
+                            return;
+                        }
+
+                        const finalPayload = { ...payload, price: priceResult.breakdown };
+                        const encodedData = encodeURIComponent(JSON.stringify(finalPayload));
+                        window.location.href = `payment.html?data=${encodedData}`;
+
+                    } catch (error) {
+                        showAlert('An error occurred during final price calculation.');
+                    }
+                });
+
+            fetchTripDetails();
+        });
+    </script>
+</body>
+</html>

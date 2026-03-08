@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Contact Form</title>
+  <style>
+    /* Main Styles */
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Outfit', sans-serif;
+  background: linear-gradient(#ffdad5, #fff7f9);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.home-button {
+  position: fixed; /* Fixed position relative to viewport */
+  top: 40px; /* Adjust as needed */
+  right: 40px;
+  background: linear-gradient(90deg, #7c56c9 70%, #78aaff 100%);
+  color: #fff;
+  padding: 10px 18px;
+  text-decoration: none;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 16px;
+  box-shadow: 0 3px 10px rgba(123, 70, 185, 0.2);
+  border: none;
+  transition: background 0.3s, transform 0.3s, box-shadow 0.3s;
+  z-index: 100;
+}
+
+.home-button:hover {
+  background: linear-gradient(90deg, #592796 70%, #457fca 100%);
+  transform: scale(1.05);
+  box-shadow: 0 5px 15px rgba(123, 70, 185, 0.3);
+}
+
+.contact-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  width: 90%;
+  max-width: 1200px;
+  padding: 40px 0;
+}
+
+.contact-left {
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  gap: 20px;
+}
+
+.contact-left-title h2 {
+  font-weight: 600;
+  color: #a363aa;
+  font-size: 40px;
+  margin-bottom: 5px;
+}
+
+.contact-left-title hr {
+  border: none;
+  width: 120px;
+  height: 5px;
+  background-color: #a363a0;
+  border-radius: 10px;
+  margin-bottom: 20px;
+}
+
+.contact-inputs {
+  width: 400px;
+  height: 50px;
+  border: none;
+  outline: none;
+  padding-left: 25px;
+  font-weight: 500;
+  color: #666;
+  border-radius: 50px;
+}
+
+.contact-left textarea {
+  height: 140px;
+  padding: 15px 25px;
+  border-radius: 20px;
+  resize: none;
+}
+
+.contact-inputs:focus {
+  border: 2px solid #ff994f;
+}
+
+.contact-inputs::placeholder {
+  color: #a9a9a9;
+}
+
+.contact-left button {
+  display: flex;
+  align-items: center;
+  padding: 15px 30px;
+  font-size: 18px;
+  color: white;
+  gap: 10px;
+  border: none;
+  border-radius: 50px;
+  background: linear-gradient(270deg, #ff994f, #fa6d86);
+  cursor: pointer;
+}
+
+.contact-left button img {
+  height: 18px;
+}
+
+.contact-right img {
+  width: 500px;
+  max-width: 100%;
+}
+
+.popup {
+  display: none;
+  position: fixed;
+  top: 40%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #dff0d8;
+  color: #3c763d;
+  padding: 30px 40px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+  z-index: 1001;
+  text-align: center;
+  font-size: 20px;
+}
+
+.popup.show {
+  display: block;
+}
+
+/* Responsive styles */
+@media (max-width: 1076px) {
+  .contact-left-title h2 {
+    font-size: 35px;
+  }
+}
+
+@media (max-width: 900px) {
+  .home-button {
+    top: 20px;
+    right: 20px;
+    padding: 8px 15px;
+    font-size: 14px;
+  }
+  .contact-container {
+    justify-content: center;
+  }
+  .contact-right img {
+    width: 400px;
+  }
+}
+
+@media (max-width: 800px) {
+  .contact-container {
+    flex-direction: column;
+    height: auto;
+  }
+  .contact-left {
+    align-items: center;
+    width: 100%;
+  }
+  .contact-right {
+    display: none; /* Hides the image on tablets */
+  }
+  .contact-inputs {
+    width: 100%;
+    max-width: 400px;
+  }
+  .contact-left textarea {
+    width: 100%;
+    max-width: 400px;
+  }
+  .contact-left-title {
+    text-align: center;
+  }
+  .contact-left-title hr {
+    margin: 10px auto 20px auto;
+  }
+  .contact-left-title h2 {
+    font-size: 32px;
+  }
+}
+
+@media (max-width: 500px) {
+  .home-button {
+    top: 15px;
+    right: 15px;
+    padding: 7px 12px;
+    font-size: 18px;
+  }
+  .contact-left-title h2 {
+    font-size: 28px;
+  }
+  .contact-left-title hr {
+    width: 90px;
+  }
+  .contact-inputs {
+    height: 45px;
+  }
+  .contact-left button {
+    padding: 12px 25px;
+    font-size: 16px;
+  }
+}
+  </style>
+   
+</head>
+<body>
+
+  <a href="index.html" class="home-button">Home</a>
+
+  <div class="contact-container">
+    <form class="contact-left" id="contactForm">
+      <div class="contact-left-title">
+        <h2>get in touch</h2>
+        <hr>
+      </div>
+      <input type="text" name="name" placeholder="YOUR NAME" class="contact-inputs" required>
+      <input type="email" name="email" placeholder="YOUR EMAIL" class="contact-inputs" required>
+      <textarea name="message" placeholder="your message" class="contact-inputs" required></textarea>
+      <button type="submit">Submit</button>
+    </form>
+
+    <div class="contact-right">
+      <img src="images/right_img.png" alt="">
+    </div>
+  </div>
+
+  <div class="popup" id="thankYouPopup">
+    <h3>Thank You!</h3>
+    <p>Your form has been submitted successfully.</p>
+  </div>
+
+  <script>
+  const form = document.getElementById('contactForm');
+  const popup = document.getElementById('thankYouPopup');
+
+  form.addEventListener('submit', async function(e) {
+    e.preventDefault();
+
+    const data = {
+      name: this.name.value,
+      email: this.email.value,
+      message: this.message.value,
+    };
+
+    const token = localStorage.getItem("token"); 
+
+    try {
+      const response = await fetch('http://localhost:3000/api/contacts', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}` 
+        },
+        body: JSON.stringify(data),
+      });
+
+      const result = await response.json();
+
+      if (response.ok) {
+        popup.classList.add('show');
+        this.reset();
+        setTimeout(() => {
+          popup.classList.remove('show');
+        }, 3000);
+      } else {
+        alert('Failed to submit form: ' + (result.error || 'Unknown error'));
+      }
+    } catch (error) {
+      alert('Failed to connect to server: ' + error.message);
+    }
+  });
+</script>
+
+</body>
+</html>
